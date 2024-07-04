@@ -26,4 +26,7 @@ const styles = StyleSheet.create({
   entryText: {
     color: "white",
   },
+  pressedItem: {
+    opacity: 0.5,
+  },
 });
