@@ -1,10 +1,15 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 
 function EntryItem(props) {
   return (
     <View style={styles.entryItem}>
-      <Text style={styles.entryText}>{props.text} </Text>
+      <Pressable
+        onPress={props.onDeleteItem.bind(this, props.id)}
+        style={({ pressed }) => pressed && styles.pressedItem}
+      >
+        <Text style={styles.entryText}>{props.text} </Text>
+      </Pressable>
     </View>
   );
 }
