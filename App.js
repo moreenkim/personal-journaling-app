@@ -1,33 +1,36 @@
-import {useState} from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  FlatList,
+} from "react-native";
+import EntryInput from "./components/EntryInput";
+import EntryItem from "./components/EntryItem";
 
 export default function App() {
-  const [enteredText, setEnteredText] = useState("")
+  const [personalEntry, setPersonalEntry] = useState([]);
 
-  const [personalGoals, setPersonalGoals] = useState([])
-
-  function goalInputHandler(enteredText) {
-    setEnteredText(enteredText)
-  }
-
-  function addGoalHandler() {
-    setPersonalGoals((currentGoals) => [...currentGoals, enteredText])
+  function addEntryHandler(enteredText) {
+    setPersonalEntry((currentEntries) => [
+      ...currentEntries,
+      { text: enteredText, key: Math.random().toString() },
+    ]);
   }
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput style={styles.textInput} placeholder="Personal goals here" onChangeText={goalInputHandler} />
-        <Button title="Add Goal" onPress={addGoalHandler}/>
-      </View>
-      <View style={styles.goalsContainer}>
-        {personalGoals.map((goal) => (
-          <View style={styles.goalItem} key={goal}>
-            <Text style={styles.goalText}>
-              {goal}{" "}
-            </Text>
-          </View>
-        ))}
+      <EntryInput onAddEntry={addEntryHandler} />
+      <View style={styles.entryContainer}>
+        <FlatList
+          data={personalEntry}
+          renderItem={(itemData) => {
+            return <EntryItem text={itemData.item.text} />;
+          }}
+          alwaysBounceVertical={false}
+        ></FlatList>
       </View>
     </View>
   );
@@ -37,7 +40,7 @@ const styles = StyleSheet.create({
   appContainer: {
     paddingTop: 50,
     paddingHorizontal: 16,
-    flex: 1
+    flex: 1,
   },
   inputContainer: {
     flex: 1,
@@ -46,7 +49,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 24,
     borderBottomWidth: 1,
-     borderBottomColor: "#4976b6"
+    borderBottomColor: "#4976b6",
   },
   textInput: {
     borderWidth: 1,
@@ -55,16 +58,16 @@ const styles = StyleSheet.create({
     marginRight: 8,
     padding: 8,
   },
-  goalsContainer: {
-    flex: 5
+  entryContainer: {
+    flex: 5,
   },
-  goalItem: {
+  entryItem: {
     margin: 8,
     borderRadius: 6,
     backgroundColor: "#5b64a4",
     padding: 8,
   },
-  goalText : {
+  entryText: {
     color: "white",
-  }
+  },
 });
